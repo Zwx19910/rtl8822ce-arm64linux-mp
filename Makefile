@@ -1,3 +1,4 @@
+EXTRA_CFLAGS += -Wno-error=date-time
 EXTRA_CFLAGS += $(USER_EXTRA_CFLAGS)
 EXTRA_CFLAGS += -O1
 #EXTRA_CFLAGS += -O3
@@ -2467,7 +2468,7 @@ ifeq ($(CONFIG_RTL8723B), y)
 $(MODULE_NAME)-$(CONFIG_MP_INCLUDED)+= core/rtw_bt_mp.o
 endif
 
-obj-$(CONFIG_RTL8822CE) := $(MODULE_NAME).o
+obj-m := $(MODULE_NAME).o
 
 else
 
