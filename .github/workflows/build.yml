@@ -1,0 +1,35 @@
+name: Build RTL8822CE Driver for ARM64
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential bc flex bison libelf-dev \
+            gcc-aarch64-linux-gnu
+
+      - name: Install kernel headers
+        run: |
+          sudo apt install -y linux-headers-$(uname -r)
+
+      - name: Build driver for ARM64
+        run: |
+          make clean
+          make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -C /lib/modules/$(uname -r)/build M=$(pwd) modules
+
+      - name: Upload .ko files
+        uses: actions/upload-artifact@v4
+        with:
+          name: rtl8822ce-arm64
+          path: |
+            *.ko
