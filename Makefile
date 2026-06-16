@@ -1,4 +1,5 @@
 EXTRA_CFLAGS += -Wno-error=date-time
+KBUILD_CFLAGS := $(filter-out -mrecord-mcount, $(KBUILD_CFLAGS))
 EXTRA_CFLAGS += $(USER_EXTRA_CFLAGS)
 EXTRA_CFLAGS += -O1
 #EXTRA_CFLAGS += -O3
