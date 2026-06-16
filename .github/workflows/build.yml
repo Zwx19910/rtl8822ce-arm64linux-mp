@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04-arm64
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
@@ -13,17 +13,16 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt update
-          sudo apt install -y build-essential bc flex bison libelf-dev \
-            gcc-aarch64-linux-gnu
+          sudo apt install -y build-essential bc flex bison libelf-dev
 
       - name: Install kernel headers
         run: |
           sudo apt install -y linux-headers-$(uname -r)
 
-      - name: Build driver for ARM64
+      - name: Build driver
         run: |
           make clean
-          make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -C /lib/modules/$(uname -r)/build M=$(pwd) modules
+          make -C /lib/modules/$(uname -r)/build M=$(pwd) modules
 
       - name: Upload .ko files
         uses: actions/upload-artifact@v4
